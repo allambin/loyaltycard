@@ -8,4 +8,6 @@
 
     <string name="save">Save</string>
     <string name="delete">Delete</string>
+    <string name="checked_in">Your visit has been saved</string>
+    <string name="not_checked_in">An error occurred</string>
 </resources>

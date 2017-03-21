@@ -12,6 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.inextends.loyaltycard.models.DaoSession;
+import com.inextends.loyaltycard.models.LoyalUser;
+import com.inextends.loyaltycard.models.LoyalUserDao;
 
 import java.util.ArrayList;
 
@@ -54,12 +59,17 @@ public class MainActivity extends AppCompatActivity
 
     private ArrayList<Button> buttonsNumbers;
 
+    private LoyalUserDao loyalUserDao;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         ButterKnife.bind(this);
+
+        DaoSession daoSession = ((App) getApplication()).getDaoSession();
+        loyalUserDao = daoSession.getLoyalUserDao();
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -103,6 +113,21 @@ public class MainActivity extends AppCompatActivity
                 String result = textResult.getText().toString();
                 if (!result.isEmpty()) {
                     textResult.setText(result.substring(0, result.length() - 1));
+                }
+            }
+        });
+
+        buttonSave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String phoneNumber = textResult.getText().toString();
+                if (!phoneNumber.isEmpty()) {
+                    LoyalUser loyalUser = new LoyalUser();
+                    loyalUser.setPhoneNumber(phoneNumber);
+                    loyalUserDao.insert(loyalUser);
+                    Toast.makeText(MainActivity.this, R.string.checked_in, Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(MainActivity.this, R.string.not_checked_in, Toast.LENGTH_SHORT).show();
                 }
             }
         });
