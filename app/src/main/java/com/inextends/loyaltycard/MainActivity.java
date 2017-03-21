@@ -1,9 +1,6 @@
 package com.inextends.loyaltycard;
 
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -12,14 +9,58 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private static final String TAG = "MainActivity";
+
+    @BindView(R.id.button_number_0)
+    Button buttonNumber0;
+    @BindView(R.id.button_number_1)
+    Button buttonNumber1;
+    @BindView(R.id.button_number_2)
+    Button buttonNumber2;
+    @BindView(R.id.button_number_3)
+    Button buttonNumber3;
+    @BindView(R.id.button_number_4)
+    Button buttonNumber4;
+    @BindView(R.id.button_number_5)
+    Button buttonNumber5;
+    @BindView(R.id.button_number_6)
+    Button buttonNumber6;
+    @BindView(R.id.button_number_7)
+    Button buttonNumber7;
+    @BindView(R.id.button_number_8)
+    Button buttonNumber8;
+    @BindView(R.id.button_number_9)
+    Button buttonNumber9;
+
+    @BindView(R.id.button_delete)
+    Button buttonDelete;
+    @BindView(R.id.button_save)
+    Button buttonSave;
+
+    @BindView(R.id.text_result)
+    TextView textResult;
+
+    private ArrayList<Button> buttonsNumbers;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        ButterKnife.bind(this);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
@@ -31,6 +72,40 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        textResult.setText("");
+
+        buttonsNumbers = new ArrayList<>();
+        buttonsNumbers.add(buttonNumber0);
+        buttonsNumbers.add(buttonNumber1);
+        buttonsNumbers.add(buttonNumber2);
+        buttonsNumbers.add(buttonNumber3);
+        buttonsNumbers.add(buttonNumber4);
+        buttonsNumbers.add(buttonNumber5);
+        buttonsNumbers.add(buttonNumber6);
+        buttonsNumbers.add(buttonNumber7);
+        buttonsNumbers.add(buttonNumber8);
+        buttonsNumbers.add(buttonNumber9);
+
+        for (Button button : buttonsNumbers) {
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Button button = (Button) view;
+                    textResult.append(button.getText().toString());
+                }
+            });
+        }
+
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String result = textResult.getText().toString();
+                if (!result.isEmpty()) {
+                    textResult.setText(result.substring(0, result.length() - 1));
+                }
+            }
+        });
     }
 
     @Override
